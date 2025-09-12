@@ -150,9 +150,9 @@ function analyzeSalesData(data, options) {
       bonus: +sellerStat.bonus.toFixed(2),
       top_products: topProducts.map((product) => ({
         sku: product.product.sku,
-        name: product.product.name,
-        revenue: +product.revenue.toFixed(2),
-        profit: +product.profit.toFixed(2),
+        // name: product.product.name,
+        // revenue: +product.revenue.toFixed(2),
+        // profit: +product.profit.toFixed(2),
         quantity: product.quantity,
       })),
     };
