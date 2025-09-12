@@ -17,15 +17,15 @@ function calculateSimpleRevenue(purchase, _product) {
  * @returns {number}
  */
 function calculateBonusByProfit(index, total, seller) {
-  const bonusPercentages = [0.15, 0.1, 0.1, 0.05];
-  if (index === total - 1) {
-    return 0;
-  } else {
-    return (
-      seller.totalProfit *
-      bonusPercentages[Math.min(index, bonusPercentages.length - 1)]
-    );
-  }
+    if (index === 0) {
+        return seller.totalProfit * 0.15;
+    } else if (index === 1 || index === 2) {
+        return seller.totalProfit * 0.1;
+    } else if (index === total - 1) {
+        return 0;
+    } else { // Для всех остальных
+        return seller.totalProfit * 0.05;
+    }
 }
 
 /**
@@ -58,10 +58,7 @@ function analyzeSalesData(data, options) {
     throw new Error("Опции должны быть объектом");
   }
 
-  const {
-    calculateRevenue = calculateSimpleRevenue,
-    calculateBonus = calculateBonusByProfit,
-  } = options;
+  const { calculateRevenue, calculateBonus } = options;
 
   if (typeof calculateRevenue !== "function") {
     throw new Error("calculateRevenue должна быть функцией");
@@ -140,7 +137,7 @@ function analyzeSalesData(data, options) {
 
   const result = sortedSellers.map((sellerStat) => {
     const topProducts = Array.from(sellerStat.products.values())
-      .sort((a, b) => b.totalProfit - a.totalProfit)
+      .sort((a, b) => b.quantity - a.quantity)
       .slice(0, 10);
 
     return {
